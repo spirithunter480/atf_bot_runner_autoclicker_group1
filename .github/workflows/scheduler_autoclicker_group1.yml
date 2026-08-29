@@ -1,0 +1,45 @@
+# =============================================================================
+# [تنظیم ۱]: نام نمایشی ورک‌فلو (برای گروه‌های بعدی مثل Group 3 نام را تغییر دهید)
+# =============================================================================
+name: ATF AutoClicker - Group 1
+
+on:
+  # اجرای دستی و تحریک از بیرون توسط کران‌جاب ۶ ساعته
+  workflow_dispatch:
+
+# =============================================================================
+# [تنظیم ۲]: نام گروه قفل هم‌زمانی
+# نکته حیاتی: برای هر ریپازیتوری جدید (مثلاً گروه ۳)، حتماً این نام را عوض کنید
+# مثال: autoclicker-group-3
+# =============================================================================
+concurrency:
+  group: autoclicker-group-1
+  cancel-in-progress: false
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run bot runner
+        env:
+          ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
+          TG_API_ID: ${{ secrets.TG_API_ID }}
+          TG_API_HASH: ${{ secrets.TG_API_HASH }}
+        # =====================================================================
+        # [تنظیم ۳]: نام فایل پایتون مربوط به این گروه
+        # برای گروه ۳ باید بشود: python bot_runner_autoclicker_group3.py
+        # =====================================================================
+        run: python bot_runner_autoclicker_group1.py
