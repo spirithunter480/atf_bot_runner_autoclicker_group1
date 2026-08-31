@@ -86,7 +86,7 @@ def get_account_headers(acc):
 QUEUE_LOCK = asyncio.Lock()
 LAST_REQUEST_TIME = 0.0
 GLOBAL_PAUSE_UNTIL = 0.0
-TOTAL_COOLDOWN = 9.2
+COOLDOWN_DELAY = 9.2
 
 async def wait_for_account_gap():
     global LAST_REQUEST_TIME, GLOBAL_PAUSE_UNTIL
@@ -99,7 +99,7 @@ async def wait_for_account_gap():
             now = time.time()
 
         num_accounts = len(ACCOUNTS) if len(ACCOUNTS) > 0 else 1
-        calculated_gap = TOTAL_COOLDOWN / num_accounts
+        calculated_gap = COOLDOWN_DELAY / num_accounts
         target_gap = max(calculated_gap, 1.3)
         
         elapsed = now - LAST_REQUEST_TIME
@@ -173,7 +173,6 @@ async def boost_worker(acc):
                 last_tap_time = time.time()
 
                 while time.time() - session_start < 2700:
-                    COOLDOWN_DELAY = 9.2
                     time_since_last_tap = time.time() - last_tap_time
                     if time_since_last_tap < COOLDOWN_DELAY:
                         await asyncio.sleep(COOLDOWN_DELAY - time_since_last_tap)
