@@ -35,6 +35,7 @@ jobs:
 
       - name: Run bot runner
         env:
+          PYTHONUNBUFFERED: "1"
           ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
           TG_API_ID: ${{ secrets.TG_API_ID }}
           TG_API_HASH: ${{ secrets.TG_API_HASH }}
